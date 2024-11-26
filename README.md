@@ -1,2 +1,2 @@
 # archOS
-operating system wannabe
+check out the wiki
