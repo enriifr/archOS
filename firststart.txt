@@ -1,0 +1,5 @@
+***FIRST START CONFIG FILE***
+this file lets the System know it's the first time it's booting up,
+it will prompt a user creation an initial setup page.
+
+file will be removed once it's done, and the page never shown again.
