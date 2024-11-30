@@ -10,7 +10,7 @@
 #include <vector>
 #include <chrono>
 
-#define OS_VER "ArchOS 0.8.92 "
+#define OS_VER "ArchOS 0.8.119 "
 
 using namespace std;
 using namespace chrono;
@@ -291,8 +291,14 @@ void loadSettings(const string& username){
 	ifstream inputFile(filename);
 
     if (!inputFile) {
-        crashScreen("READ_USERDATA_SETTINGS","USERSETTINGS_FILE_UNAVAIL");
-    }
+        //crashScreen("READ_USERDATA_SETTINGS","USERSETTINGS_FILE_UNAVAIL");
+    	SetColor(12,0);
+		cout<<endl<<"WARNING: USER SETTINGS DB IS UNAVAIL. DEFAULT SETTINGS APPLIED."<<endl;
+		system("pause");
+		globScreensaverEnabled=true;
+		globScreensaverTime=10;
+		return;
+	}
 
     string line, setting="SCREENSAVER";
 
@@ -669,7 +675,7 @@ void settings(const string&username){
 		SetColor(10,0);
 		cout<<"\nSYSTEM PREFERENCES\n"<<endl;
 		SetColor(15,0);
-		cout<<"\n1. User settings\n2. System Update"<<endl;
+		cout<<"\nI. About PC\n\n1. User settings\n2. System Update"<<endl;
 		ResetColor();
 		cout<<"\nType '!back' to go back to the main menu.\n"<<endl;
 		cout<<username<<"> ";
@@ -728,8 +734,24 @@ void settings(const string&username){
 			cout<<"Your User Account does not have permission to execute this action."<<endl;
 			ResetColor();
 			system("pause");
-		}
-		else{
+		}else if(settingsmenuchoice=="I"||settingsmenuchoice=="i"){
+			system("cls");
+			statusbar("aboutpc");
+			cout<<endl;
+			cout<<"System Info:"<<endl;
+			cout<<endl<<"ArchOS version: "<<OS_VER<<endl;
+			cout<<"User: "<<username;
+			if(globIsUserAdmin=="Y"){
+				SetColor(9,0);
+				cout<<" [Administrator]"<<endl;
+				ResetColor();
+			}
+			cout<<"Installed programs: WIP"<<endl;
+			cout<<"Installed programs: WIP"<<endl;
+			cout<<"Installed programs: WIP"<<endl;
+			cout<<endl<<endl;
+			getch();
+		}else{
 			SetColor(12,0);
 			cout<<"Invalid choice."<<endl;
 			ResetColor();
@@ -1108,6 +1130,7 @@ void shutdown(int xcentro,int ycentro);
 void mainmenu(const string& username) {
     char menuchoice;
     bool menubool = true;
+    globUSER=username;
     while (menubool) {
         system("cls");
         statusbar("mainmenu", username);
@@ -1164,8 +1187,8 @@ DWORD WINAPI screensaverTimer(LPVOID lpParam) {
     short originalX, originalY;
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-
     while (true) {
+		start:
         // Calculate elapsed time since the last key press
         for (int key = 0; key <= 0xFF; ++key) {
             if (GetAsyncKeyState(key) & 0x8000) { // Check if key is pressed
@@ -1237,7 +1260,7 @@ DWORD WINAPI screensaverTimer(LPVOID lpParam) {
                             cin.ignore(numeric_limits<streamsize>::max(), '\n');
                             
                             screensaverDismissed = true;  // Exit loop after key press
-                            break;
+                            goto start;
                         }
                     }
 
@@ -1251,8 +1274,6 @@ DWORD WINAPI screensaverTimer(LPVOID lpParam) {
         // Add a small delay to check the elapsed time periodically
         this_thread::sleep_for(milliseconds(1));
     }
-
-    return 0;
 }
 
 void debugscrsize(void){
