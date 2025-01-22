@@ -465,14 +465,21 @@ void addUser(const string& theUser) {
     	ResetColor();
 		int loop=0;
 		while(1){
-			getch_buffer=getch();
-			if(getch_buffer=='\r'){
-				break;
-			}else{
-				cout<<"*";
-				password+=getch_buffer;
+				getch_buffer=getch();
+				if(getch_buffer=='\r'){
+					break;
+				}else if(getch_buffer=='\b'){
+					if(password.size()>0){
+					cout<<'\b';
+					cout<<" ";
+					cout<<'\b';
+					password.pop_back();					
+					}
+				}else{
+					cout<<"*";
+					password+=getch_buffer;
+				}
 			}
-		}
 		//password[loop]='\0';
 		save_user("users.txt",userName,password,adminYN);
 	}
@@ -520,14 +527,21 @@ void newSystem() {  // NON FINITO
     	ResetColor();
 		int loop=0;
 		while(1){
-			getch_buffer=getch();
-			if(getch_buffer=='\r'){
-				break;
-			}else{
-				cout<<"*";
-				password+=getch_buffer;
+				getch_buffer=getch();
+				if(getch_buffer=='\r'){
+					break;
+				}else if(getch_buffer=='\b'){
+					if(password.size()>0){
+					cout<<'\b';
+					cout<<" ";
+					cout<<'\b';
+					password.pop_back();					
+					}
+				}else{
+					cout<<"*";
+					password+=getch_buffer;
+				}
 			}
-		}
 		//password[loop]='\0';
 		save_user("users.txt",userName,password,"Y");
 	}
