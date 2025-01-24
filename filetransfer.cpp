@@ -92,7 +92,7 @@ void move_files(const string& usb_path, const string& destination) {
 
 int main() {
     // Path to your USB drive and destination folder (replace these with your actual paths)
-    string usb_path = "H:\\";  // Example: "E:\" (update this to your USB path or letter)
+    string usb_path = "D:\\";  // Example: "E:\" (update this to your USB path or letter)
     string destination_folder = "apps"; // Destination folder
 
     SetColor(10, 0);  // Green text
