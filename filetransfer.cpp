@@ -90,6 +90,16 @@ void move_files(const string& usb_path, const string& destination) {
     FindClose(hFind);
 }
 
+DWORD WINAPI escapekey(LPVOID lpParam) {
+    string* message = static_cast<string*>(lpParam);
+    while(1){
+    	if(GetAsyncKeyState(VK_ESCAPE))
+    		break;
+	}
+
+	exit(0);
+}
+
 int main() {
     // Path to your USB drive and destination folder (replace these with your actual paths)
     string usb_path = "D:\\";  // Example: "E:\" (update this to your USB path or letter)
@@ -97,7 +107,17 @@ int main() {
 
     SetColor(10, 0);  // Green text
     cout << "Waiting for USB stick to be inserted..." << endl;
-    ResetColor();
+	ResetColor();
+    cout<<"Press ESCAPE to quit"<<endl<<endl;
+	
+	HANDLE hThread = CreateThread(
+        NULL,                     // Default security attributes
+        0,                        // Default stack size
+        escapekey,         // Thread function
+        NULL,                 // Parameter to pass to the thread function
+        0,                        // Default creation flags
+        NULL                      // Thread ID (not used)
+    );
 
     // Continuously check for USB drive
     while (true) {
