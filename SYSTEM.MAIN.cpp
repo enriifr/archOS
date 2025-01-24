@@ -285,6 +285,33 @@ DWORD WINAPI clock(LPVOID lpParam) {
     return 0;
 }
 
+void createSettingsDB(const string& username){
+	string filename;
+	filename=username+"_settings.txt";
+	ofstream outFile(filename);
+	if(outFile.is_open()){
+		outFile<<"SCREENSAVER N"<<endl;
+	}else{
+		SetColor(14,0);
+		cout<<"Unable to create User Settings DB File"<<endl;
+	}
+	outFile.close();
+}
+
+void updateSettingsDB(const string& username,const string& screensaverSettings){
+	string filename;
+	filename=username+"_settings.txt";
+	ofstream outFile(filename);
+	if(outFile.is_open()){
+		outFile<<screensaverSettings<<endl;
+	}else{
+		SetColor(14,0);
+		cout<<"\nUnable to overwrite User Settings DB File"<<endl;
+		system("pause");
+	}
+	outFile.close();
+}
+
 void loadSettings(const string& username){
 	string filename;
 	filename=username+"_settings.txt";
@@ -545,6 +572,7 @@ void newSystem() {  // NON FINITO
 		//password[loop]='\0';
 		save_user("users.txt",userName,password,"Y");
 	}
+	createSettingsDB(userName);
     SetColor(14, 0);  // Yellow text
     cout << "\nAll done!\nEnjoy your ArchOS experience.\n" << endl;
     ResetColor();
@@ -759,6 +787,9 @@ void settings(const string&username){
 				SetColor(9,0);
 				cout<<" [Administrator]"<<endl;
 				ResetColor();
+			}
+			else{
+				cout<<endl;
 			}
 			cout<<"Installed programs: WIP"<<endl;
 			cout<<"Installed programs: WIP"<<endl;
