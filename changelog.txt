@@ -1,0 +1,8 @@
+0.8.119
+
++Enhanced Security when entering password
+-Temporarily disabled Screensaver
+~Many Hotfixes
+
+	-That's All!
+	-enri, 2025
